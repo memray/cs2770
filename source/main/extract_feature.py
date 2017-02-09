@@ -52,7 +52,9 @@ def extract_feature(deploy_proto,  model_path):
             net.blobs['data'].data[...] = img
             net.forward()
 
-            data_sample['feature_fc8'] = net.blobs['fc8'].data[0]
+            data_sample['feature_fc8'] = net.blobs['fc8_class20'].data[0]
+            # 'fc8' layer in pretrain AlexNet
+            # data_sample['feature_fc8'] = net.blobs['fc8'].data[0]
 
             img_features[class_name].append(data_sample)
 
