@@ -33,6 +33,8 @@ if __name__ == '__main__':
     testing_data = []
 
     if os.path.exists(config['training_data_cache']):
+        print('Found processed data, loading...')
+
         with open(config['training_data_cache'], 'rb') as f_:
             training_data = pickle.load(f_)
         with open(config['validation_data_cache'], 'rb') as f_:
@@ -52,6 +54,12 @@ if __name__ == '__main__':
             training_data.extend([data_list[:int(len(data_list)*0.8)], label_list[:int(len(data_list)*0.8)]])
             validation_data.extend([data_list[int(len(data_list)*0.8)+1: int(len(data_list)*0.9)], label_list[int(len(data_list)*0.8)+1:int(len(data_list)*0.9)]])
             testing_data.extend([data_list[int(len(data_list)*0.9)+1:], label_list[int(len(data_list)*0.9)+1:]])
+
+            break
+
+        print('#(Training)=%d' % len(training_data))
+        print('#(Validation)=%d' % len(validation_data))
+        print('#(Testing)=%d' % len(testing_data))
 
         with open(config['training_data_cache'], 'wb') as f_:
             pickle.dump(training_data, f_, protocol=pickle.HIGHEST_PROTOCOL)
