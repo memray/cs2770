@@ -79,12 +79,12 @@ if __name__ == '__main__':
     train_loss = []
     validate_accuracy = []
 
-    for epoch in range(1):
+    for epoch in range(25):
         '''
         Training
         '''
         print('Training epoch=%d' % epoch)
-        shuffled_index = np.arange(len(training_data))
+        shuffled_index = np.arange(len(training_data['data']))
         np.random.shuffle(shuffled_index)
 
         for it in range(len(training_data)/config['epoch_size']+1):
