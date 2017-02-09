@@ -15,12 +15,12 @@ __email__ = "rui.meng@pitt.edu"
 
 config = config_setting.load_config()
 
-def extract_feature():
+def extract_feature(model_path):
     caffe.set_device(3) # ENTER THE GPU NUMBER YOU NOTED ABOVE (0-3) HERE
     caffe.set_mode_gpu()
 
 
-    net = caffe.Net('/tmp/caffe/models/deploy.prototxt', '/tmp/caffe/models/weights.caffemodel', caffe.TEST)
+    net = caffe.Net('/tmp/caffe/models/deploy.prototxt', model_path, caffe.TEST)
     # net = caffe.Net(config['proto_path'], config['caffemodel_path'], caffe.TEST)
 
     transformer = caffe.io.Transformer({'data': net.blobs['data'].data.shape})
@@ -58,3 +58,7 @@ def extract_feature():
 
     with open(config['feature_path'], 'wb') as handle:
         pickle.dump(img_features, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+if __name__ == '__main__':
+    # extract_feature('/tmp/caffe/models/weights.caffemodel')
+    extract_feature(config['trained_model_dir']+'model.epoch=24.caffemodel')

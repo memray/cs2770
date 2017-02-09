@@ -18,7 +18,8 @@ def load_config():
 
     config['train_val.prototxt'] = '/afs/cs.pitt.edu/usr0/memray/private/cs2770/models/train_val.prototxt'
     config['solver.prototxt'] = '/afs/cs.pitt.edu/usr0/memray/private/cs2770/models/solver.prototxt'
-    config['minibatch_size'] = 32
+    config['deploy.prototxt'] = '/afs/cs.pitt.edu/usr0/memray/private/cs2770/models/deploy.prototxt'
+    config['minibatch_size'] = 1
     config['trained_model_dir'] = '/afs/cs.pitt.edu/usr0/memray/private/trained_models.stepsize=1000.lr=0.001/'
 
     if not os.path.exists(config['trained_model_dir']):
