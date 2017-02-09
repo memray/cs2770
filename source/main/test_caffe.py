@@ -45,7 +45,7 @@ if __name__ == '__main__':
             data_sample['class_name'] = class_name
 
             img = caffe.io.load_image(img_file)
-            img = transformer.preprocess('data', img)
+            img = transformer.preprocess('data', config['data_path']+os.sep+class_name+os.sep+img)
             net.blobs['data'].data[...] = img
             net.forward()
 
