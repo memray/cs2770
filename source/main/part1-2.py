@@ -12,7 +12,7 @@ import config_setting
 __author__ = "Rui Meng"
 __email__ = "rui.meng@pitt.edu"
 
-if __name__ == '__main__':
+def extract_feature():
     caffe.set_device(3) # ENTER THE GPU NUMBER YOU NOTED ABOVE (0-3) HERE
     caffe.set_mode_gpu()
 
@@ -56,3 +56,7 @@ if __name__ == '__main__':
 
     with open(config['feature_path'], 'wb') as handle:
         pickle.dump(img_features, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+if __name__ == '__main__':
+    pass

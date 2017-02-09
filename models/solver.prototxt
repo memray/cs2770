@@ -7,6 +7,6 @@ display: 20
 max_iter: 999999
 momentum: 0.9
 weight_decay: 0.0005
-snapshot: 416 # NUMBER OF ITERATIONS IN AN EPOCH, #(data)=16682, #(training)=13336
+snapshot: 2080 # NUMBER OF ITERATIONS IN AN EPOCH, #(data)=16682, #(training)=13336
 snapshot_prefix: "/afs/cs.pitt.edu/usr0/memray/private/trained_models/memray_trained.caffemodel" # THE FULL PATH TO THE DIRECTORY YOU WISH TO SAVE YOUR TRAINED MODELS
 solver_mode: GPU
