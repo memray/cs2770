@@ -1,0 +1,14 @@
+Homework 1 Report - Rui Meng
+1. Setting up and splitting the data correctly.
+    I simply split the data by their indexes, that is I choose the data which index in [:len(data)*0.8] as training, [len(data)*0.8:len(data)*0.9] as validation and the remaining as testing data.
+    The trick thing is, the batch size of Caffe is strict. Thus for the last batch
+
+2. Accuracy of pretrained model using SVM, and confusion matrix.
+    Accuracy = 0.246228
+
+3. Accuracy of trained model without SVM.
+
+
+
+4. Accuracy of trained model using SVM.
+5. Plot of train losses and validation accuracies.
