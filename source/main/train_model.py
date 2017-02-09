@@ -12,7 +12,7 @@ import config_setting
 __author__ = "Rui Meng"
 __email__ = "rui.meng@pitt.edu"
 
-if __name__ == '__main__':
+def training():
     caffe.set_device(3) # ENTER THE GPU NUMBER YOU NOTED ABOVE (0-3) HERE
     caffe.set_mode_gpu()
 
@@ -147,11 +147,68 @@ if __name__ == '__main__':
         validate_accuracy.append(np.average(validate_a))
         print('Epoch %d, accuracy = %f' % (epoch, np.average(validate_a)))
 
-        solver.net.save(config['trained_model_dir']+'model.epoch=%d.caffemodel' % epoch)
         print('-' * 50)
 
+    solver.net.save(config['trained_model_dir']+'model.epoch=%d.caffemodel' % epoch)
     with open(config['trained_model_dir']+ 'training_loss.pkl', 'w') as f_:
         pickle.dump(train_loss, f_, protocol=pickle.HIGHEST_PROTOCOL)
 
     with open(config['trained_model_dir']+ 'validate_accuracy.pkl', 'w') as f_:
         pickle.dump(validate_accuracy, f_, protocol=pickle.HIGHEST_PROTOCOL)
+
+def testing():
+    caffe.set_device(3) # ENTER THE GPU NUMBER YOU NOTED ABOVE (0-3) HERE
+    caffe.set_mode_gpu()
+
+    config = config_setting.load_config()
+    net = caffe.Net('/tmp/caffe/models/deploy.prototxt', '/tmp/caffe/models/weights.caffemodel', caffe.TEST)
+
+    transformer = caffe.io.Transformer({'data': net.blobs['data'].data.shape})
+    transformer.set_mean('data', np.load('/tmp/caffe/python/caffe/imagenet/ilsvrc_2012_mean.npy').mean(1).mean(1))
+    transformer.set_transpose('data', (2,0,1))
+    transformer.set_channel_swap('data', (2,1,0))
+    transformer.set_raw_scale('data', 255.0)
+
+    solver = caffe.SGDSolver(config['solver.prototxt'])
+    solver.net.copy_from(config['trained_model_dir']+'model.epoch=24.caffemodel')
+
+    testing_data = {}
+    testing_data['data'] = []
+    testing_data['label'] = []
+
+    if not os.path.exists(config['training_data_cache']):
+        print('Not found processed data')
+        exit()
+
+    with open(config['testing_data_cache'], 'rb') as f_:
+        testing_data = pickle.load(f_)
+
+    test_a = []
+    number_data = len(testing_data['data'])
+    number_minibatch = number_data / config['minibatch_size'] + 1
+    for it in range(number_minibatch):
+
+        if it == number_minibatch - 1:
+            data_ = testing_data['data'][it * config['minibatch_size']: number_data]
+            label_ = testing_data['label'][it * config['minibatch_size']: number_data]
+            print('Validating %d-%d, size(data_)=%d, size(label_)=%d' % (
+            it * config['minibatch_size'], number_data, len(data_), len(label_)))
+        else:
+            data_ = testing_data['data'][it * config['minibatch_size']: (it + 1) * config['minibatch_size']]
+            label_ = testing_data['label'][it * config['minibatch_size']: (it + 1) * config['minibatch_size']]
+            print('Validating %d-%d, size(data_)=%d, size(label_)=%d' % (
+            it * config['minibatch_size'], (it + 1) * config['minibatch_size'], len(data_), len(label_)))
+
+        if len(data_) != config['minibatch_size']:
+            break
+
+        solver.net.blobs['data'].data[...] = data_
+        solver.net.blobs['label'].data[...] = label_
+
+        solver.net.forward()
+        test_a.append(solver.net.blobs['accuracy'].data)
+
+    print('Test accuracy = %f' % (np.average(test_a)))
+
+if __name__ == '__main__':
+    testing()

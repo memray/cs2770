@@ -6,17 +6,19 @@ import cPickle as pickle
 import matplotlib.pyplot as plt
 from PIL import Image
 from sklearn import svm
+import sklearn.preprocessing
 import caffe
 import config_setting
 
 __author__ = "Rui Meng"
 __email__ = "rui.meng@pitt.edu"
 
+config = config_setting.load_config()
+
 def extract_feature():
     caffe.set_device(3) # ENTER THE GPU NUMBER YOU NOTED ABOVE (0-3) HERE
     caffe.set_mode_gpu()
 
-    config = config_setting.load_config()
 
     net = caffe.Net('/tmp/caffe/models/deploy.prototxt', '/tmp/caffe/models/weights.caffemodel', caffe.TEST)
     # net = caffe.Net(config['proto_path'], config['caffemodel_path'], caffe.TEST)
@@ -56,7 +58,3 @@ def extract_feature():
 
     with open(config['feature_path'], 'wb') as handle:
         pickle.dump(img_features, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
-
-if __name__ == '__main__':
-    pass
