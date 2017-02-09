@@ -191,12 +191,12 @@ def testing():
         if it == number_minibatch - 1:
             data_ = testing_data['data'][it * config['minibatch_size']: number_data]
             label_ = testing_data['label'][it * config['minibatch_size']: number_data]
-            print('Validating %d-%d, size(data_)=%d, size(label_)=%d' % (
+            print('Testing %d-%d, size(data_)=%d, size(label_)=%d' % (
             it * config['minibatch_size'], number_data, len(data_), len(label_)))
         else:
             data_ = testing_data['data'][it * config['minibatch_size']: (it + 1) * config['minibatch_size']]
             label_ = testing_data['label'][it * config['minibatch_size']: (it + 1) * config['minibatch_size']]
-            print('Validating %d-%d, size(data_)=%d, size(label_)=%d' % (
+            print('Testing %d-%d, size(data_)=%d, size(label_)=%d' % (
             it * config['minibatch_size'], (it + 1) * config['minibatch_size'], len(data_), len(label_)))
 
         if len(data_) != config['minibatch_size']:
@@ -207,6 +207,7 @@ def testing():
 
         solver.net.forward()
         test_a.append(solver.net.blobs['accuracy'].data)
+        print('\tAccuracy=%f' % solver.net.blobs['accuracy'].data)
 
     print('Test accuracy = %f' % (np.average(test_a)))
 
