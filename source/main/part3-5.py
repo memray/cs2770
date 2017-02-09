@@ -99,13 +99,13 @@ if __name__ == '__main__':
                 label_ = training_data['label'][shuffled_index[it * config['minibatch_size']: number_data]]
                 print('Training %d-%d, size(data_)=%d, size(label_)=%d' % (it * config['minibatch_size'], number_data, len(data_), len(label_)))
 
-                if len(data_) != config['minibatch_size']:
-                    break
-
             else:
                 data_ = training_data['data'][shuffled_index[it * config['minibatch_size']: (it + 1) * config['minibatch_size']]]
                 label_ = training_data['label'][shuffled_index[it * config['minibatch_size']: (it + 1) * config['minibatch_size']]]
                 print('Training %d-%d, size(data_)=%d, size(label_)=%d' % (it * config['minibatch_size'], (it + 1) * config['minibatch_size'], len(data_), len(label_)))
+
+            if len(data_) != config['minibatch_size']:
+                break
 
             solver.net.blobs['data'].data[...] = data_
             solver.net.blobs['label'].data[...] = label_
