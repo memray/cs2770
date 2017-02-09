@@ -38,22 +38,21 @@ if __name__ == '__main__':
         for img_id, img_file in enumerate(os.listdir(config['data_path']+os.sep+class_name)):
             if img_id % 100 == 0:
                 print(img_id)
+                print(config['data_path']+os.sep+class_name+os.sep+img_file)
 
             data_sample = {}
             data_sample['name'] = img_file
             data_sample['class'] = class_id
             data_sample['class_name'] = class_name
 
-            img = caffe.io.load_image(img_file)
-            img = transformer.preprocess('data', config['data_path']+os.sep+class_name+os.sep+img)
+            img = caffe.io.load_image(config['data_path']+os.sep+class_name+os.sep+img_file)
+            img = transformer.preprocess('data', img)
             net.blobs['data'].data[...] = img
             net.forward()
 
             data_sample['feature_fc8'] = net.blobs['fc8'].data[0]
 
             img_features[class_name].append(data_sample)
-
-        break
 
     with open(config['feature_path'], 'wb') as handle:
         pickle.dump(img_features, handle, protocol=pickle.HIGHEST_PROTOCOL)
