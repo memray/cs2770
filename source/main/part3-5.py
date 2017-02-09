@@ -94,7 +94,7 @@ if __name__ == '__main__':
         for it in range(number_minibatch):
             print('\tTraining epoch=%d, round=%d' % (epoch, it))
 
-            if it == number_minibatch:
+            if it == number_minibatch-1:
                 data_ = training_data['data'][shuffled_index[it * config['minibatch_size']: number_data]]
                 label_ = training_data['label'][shuffled_index[it * config['minibatch_size']: number_data]]
                 print('Training %d-%d, size(data_)=%d, size(label_)=%d' % (it * config['minibatch_size'], number_data, len(data_), len(label_)))
@@ -123,14 +123,17 @@ if __name__ == '__main__':
 
         validate_a = []
         number_data = len(validation_data['data'])
-        for it in range(number_data/config['minibatch_size']+1):
+        number_minibatch = number_data/config['minibatch_size']+1
+        for it in range(number_minibatch):
 
-            if it == len(validation_data)/config['minibatch_size']:
+            if it == number_minibatch-1:
                 data_ = validation_data['data'][it * config['minibatch_size']: number_data]
                 label_ = validation_data['label'][it * config['minibatch_size']: number_data]
+                print('Validating %d-%d, size(data_)=%d, size(label_)=%d' % (it * config['minibatch_size'], number_data, len(data_), len(label_)))
             else:
                 data_ = validation_data['data'][it * config['minibatch_size']: (it + 1) * config['minibatch_size']]
                 label_ = validation_data['label'][it * config['minibatch_size']: (it + 1) * config['minibatch_size']]
+                print('Validating %d-%d, size(data_)=%d, size(label_)=%d' % (it * config['minibatch_size'], (it + 1) * config['minibatch_size'], len(data_), len(label_)))
 
             solver.net.blobs['data'].data[...] = data_
             solver.net.blobs['label'].data[...] = label_
