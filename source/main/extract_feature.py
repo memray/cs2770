@@ -60,8 +60,8 @@ def extract_feature(deploy_proto,  model_path):
             data_sample['feature'] = copy.deepcopy(net.blobs['fc7'].data[0])
 
             print('Feature Matrix:')
-            print(net.blobs['fc7'].data[0])
-            input("Press enter!")
+            print(str(data_sample['feature']))
+            a = input("Press enter!")
             print('*' * 50)
             # data_sample['feature_fc8'] = net.blobs['fc8_class20'].data[0]
             # 'fc8' layer in pretrain AlexNet
