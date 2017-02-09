@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import copy
 import numpy as np
 import cPickle as pickle
 import matplotlib.pyplot as plt
@@ -56,7 +57,7 @@ def extract_feature(deploy_proto,  model_path):
             net.blobs['data'].data[...] = img
             output = net.forward()
 
-            data_sample['feature'] = net.blobs['fc7'].data[0]
+            data_sample['feature'] = copy.deepcopy(net.blobs['fc7'].data[0])
 
             print('Feature Matrix:')
             print(net.blobs['fc7'].data[0])
