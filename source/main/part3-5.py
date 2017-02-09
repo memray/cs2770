@@ -148,6 +148,7 @@ if __name__ == '__main__':
         print('Epoch %d, accuracy = %f' % (epoch, np.average(validate_a)))
 
         solver.net.save(config['trained_model_dir']+'model.epoch=%d.caffemodel' % epoch)
+        print('-' * 50)
 
     with open(config['trained_model_dir']+ 'training_loss.pkl', 'w') as f_:
         pickle.dump(train_loss, f_, protocol=pickle.HIGHEST_PROTOCOL)
