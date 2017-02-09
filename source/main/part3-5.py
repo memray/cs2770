@@ -28,9 +28,15 @@ if __name__ == '__main__':
     solver = caffe.SGDSolver(config['solver.prototxt'])
     solver.net.copy_from('/tmp/caffe/models/weights.caffemodel')
 
-    training_data = []
-    validation_data = []
-    testing_data = []
+    training_data = {}
+    training_data['data'] = []
+    training_data['label'] = []
+    validation_data = {}
+    validation_data['data'] = []
+    validation_data['label'] = []
+    testing_data = {}
+    testing_data['data'] = []
+    testing_data['label'] = []
 
     if os.path.exists(config['training_data_cache']):
         print('Found processed data, loading...')
@@ -51,15 +57,16 @@ if __name__ == '__main__':
                 img = transformer.preprocess('data', img)
                 data_list.append(img)
             label_list = [class_id] * len(data_list)
-            training_data.extend([data_list[:int(len(data_list)*0.8)], label_list[:int(len(data_list)*0.8)]])
-            validation_data.extend([data_list[int(len(data_list)*0.8)+1: int(len(data_list)*0.9)], label_list[int(len(data_list)*0.8)+1:int(len(data_list)*0.9)]])
-            testing_data.extend([data_list[int(len(data_list)*0.9)+1:], label_list[int(len(data_list)*0.9)+1:]])
+            training_data['data'].extend(data_list[:int(len(data_list)*0.8)])
+            training_data['label'].extend(label_list[:int(len(data_list)*0.8)])
+            validation_data['data'].extend(data_list[int(len(data_list)*0.8)+1: int(len(data_list)*0.9)])
+            validation_data['label'].extend(label_list[int(len(data_list)*0.8)+1:int(len(data_list)*0.9)])
+            testing_data['data'].extend(data_list[int(len(data_list)*0.9)+1:])
+            testing_data['label'].extend(label_list[int(len(data_list)*0.9)+1:])
 
-            break
-
-        print('#(Training)=%d' % len(training_data))
-        print('#(Validation)=%d' % len(validation_data))
-        print('#(Testing)=%d' % len(testing_data))
+        print('#(Training)=%d' % len(training_data['data']))
+        print('#(Validation)=%d' % len(validation_data['data']))
+        print('#(Testing)=%d' % len(testing_data['data']))
 
         with open(config['training_data_cache'], 'wb') as f_:
             pickle.dump(training_data, f_, protocol=pickle.HIGHEST_PROTOCOL)
@@ -83,14 +90,16 @@ if __name__ == '__main__':
         for it in range(len(training_data)/config['epoch_size']+1):
 
             if it == len(training_data)/config['epoch_size']:
-                data_ = training_data[shuffled_index[it * config['epoch_size']: len(training_data) - 1]]
+                data_ = training_data['data'][shuffled_index[it * config['epoch_size']: len(training_data) - 1]]
+                label_ = training_data['label'][shuffled_index[it * config['epoch_size']: len(training_data) - 1]]
                 print('Training %d-%d' % (it * config['epoch_size'], len(training_data) - 1))
             else:
-                data_ = training_data[shuffled_index[it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]]
+                data_ = training_data['data'][shuffled_index[it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]]
+                label_ = training_data['label'][shuffled_index[it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]]
                 print('Training %d-%d' % (it * config['epoch_size'], (it + 1) * config['epoch_size'] - 1))
 
-            solver.net.blobs['data'].data[...] = data_[0]
-            solver.net.blobs['label'].data[...] = data_[1]
+            solver.net.blobs['data'].data[...] = data_
+            solver.net.blobs['label'].data[...] = label_
 
             solver.step(1)
 
@@ -107,12 +116,14 @@ if __name__ == '__main__':
         for it in range(len(validation_data)/config['epoch_size']+1):
 
             if it == len(validation_data)/config['epoch_size']:
-                data_ = validation_data[it * config['epoch_size']: len(validation_data) - 1]
+                data_ = validation_data['data'][it * config['epoch_size']: len(validation_data) - 1]
+                label_ = validation_data['label'][it * config['epoch_size']: len(validation_data) - 1]
             else:
-                data_ = validation_data[it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]
+                data_ = validation_data['data'][it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]
+                label_ = validation_data['label'][it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]
 
-            solver.net.blobs['data'].data[...] = data_[0]
-            solver.net.blobs['label'].data[...] = data_[1]
+            solver.net.blobs['data'].data[...] = data_
+            solver.net.blobs['label'].data[...] = label_
 
             solver.net.forward()
             validate_a.append(solver.net.blobs['accuracy'].data)
