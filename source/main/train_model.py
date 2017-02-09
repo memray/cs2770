@@ -208,6 +208,7 @@ def testing():
         solver.net.forward()
         test_a.append(solver.net.blobs['accuracy'].data)
         print('\tAccuracy=%f' % solver.net.blobs['accuracy'].data)
+        print(test_a)
 
     print('Test #(data)=%d, #(corect)=%d, accuracy=%f' % (len(test_a), int(sum(test_a)) , np.mean(test_a)))
 
