@@ -42,8 +42,8 @@ def split_data(feature_dict):
 
     return training_data, validation_data, testing_data
 
-def svm_test_pretrain_model():
-    img_features = load_feature('../pretrain_feature_dump.pkl')
+def svm_test_model(feature_path):
+    img_features = load_feature(feature_path)
     train_, validate_, test_ = split_data(img_features)
 
     X = sklearn.preprocessing.scale([d['feature_fc8'] for d in train_['data']])
@@ -60,7 +60,7 @@ def svm_test_pretrain_model():
 
     print('Accuracy on %d data = %f' % (len(X), accuracy))
 
-
-
 if __name__ == '__main__':
-    svm_test_pretrain_model()
+    pretrain_feature = '../pretrain_feature_dump.pkl'
+    newtrain_feature = '../newtrained_feature_dump.pkl'
+    svm_test_model(newtrain_feature)
