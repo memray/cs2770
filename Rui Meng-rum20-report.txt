@@ -7,7 +7,7 @@ Homework 1 Report - Rui Meng
     Accuracy = 0.246228
 
 3. Accuracy of trained model without SVM.
-    Test accuracy = 0.906250
+    Test #(data)=1657, #(corect)=901, accuracy=0.543754
 
 4. Accuracy of trained model using SVM.
 5. Plot of train losses and validation accuracies.
