@@ -4,8 +4,8 @@ layer {
   type: "Input"
   top: "data"
   top: "label"
-  input_param { shape: { dim: 8 dim: 3 dim: 227 dim: 227 }
-				shape: { dim: 8 }}
+  input_param { shape: { dim: 32 dim: 3 dim: 227 dim: 227 }
+				shape: { dim: 32 }}
 }
 layer {
   name: "conv1"

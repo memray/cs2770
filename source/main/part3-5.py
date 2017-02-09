@@ -86,19 +86,22 @@ if __name__ == '__main__':
         '''
         print('Training epoch=%d' % epoch)
         number_data =  len(training_data['data'])
+        number_minibatch = number_data/config['minibatch_size']+1
         shuffled_index = np.arange(number_data)
         np.random.shuffle(shuffled_index)
+        print('\t #(minibatch)=%d' % number_minibatch)
 
-        for it in range(number_data/config['epoch_size']+1):
+        for it in range(number_minibatch):
+            print('\tTraining epoch=%d, round=%d' % (epoch, it))
 
-            if it == len(training_data)/config['epoch_size']:
-                data_ = training_data['data'][shuffled_index[it * config['epoch_size']: number_data - 1]]
-                label_ = training_data['label'][shuffled_index[it * config['epoch_size']: number_data - 1]]
-                print('Training %d-%d' % (it * config['epoch_size'], number_data - 1))
+            if it == number_minibatch:
+                data_ = training_data['data'][shuffled_index[it * config['minibatch_size']: number_data - 1]]
+                label_ = training_data['label'][shuffled_index[it * config['minibatch_size']: number_data - 1]]
+                print('Training %d-%d' % (it * config['minibatch_size'], number_data - 1))
             else:
-                data_ = training_data['data'][shuffled_index[it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]]
-                label_ = training_data['label'][shuffled_index[it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]]
-                print('Training %d-%d' % (it * config['epoch_size'], (it + 1) * config['epoch_size'] - 1))
+                data_ = training_data['data'][shuffled_index[it * config['minibatch_size']: (it + 1) * config['minibatch_size'] - 1]]
+                label_ = training_data['label'][shuffled_index[it * config['minibatch_size']: (it + 1) * config['minibatch_size'] - 1]]
+                print('Training %d-%d' % (it * config['minibatch_size'], (it + 1) * config['minibatch_size'] - 1))
 
             solver.net.blobs['data'].data[...] = data_
             solver.net.blobs['label'].data[...] = label_
@@ -116,14 +119,14 @@ if __name__ == '__main__':
 
         validate_a = []
         number_data = len(validation_data['data'])
-        for it in range(number_data/config['epoch_size']+1):
+        for it in range(number_data/config['minibatch_size']+1):
 
-            if it == len(validation_data)/config['epoch_size']:
-                data_ = validation_data['data'][it * config['epoch_size']: number_data - 1]
-                label_ = validation_data['label'][it * config['epoch_size']: number_data - 1]
+            if it == len(validation_data)/config['minibatch_size']:
+                data_ = validation_data['data'][it * config['minibatch_size']: number_data - 1]
+                label_ = validation_data['label'][it * config['minibatch_size']: number_data - 1]
             else:
-                data_ = validation_data['data'][it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]
-                label_ = validation_data['label'][it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]
+                data_ = validation_data['data'][it * config['minibatch_size']: (it + 1) * config['minibatch_size'] - 1]
+                label_ = validation_data['label'][it * config['minibatch_size']: (it + 1) * config['minibatch_size'] - 1]
 
             solver.net.blobs['data'].data[...] = data_
             solver.net.blobs['label'].data[...] = label_
