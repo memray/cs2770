@@ -75,7 +75,8 @@ if __name__ == '__main__':
         with open(config['testing_data_cache'], 'wb') as f_:
             pickle.dump(testing_data, f_, protocol=pickle.HIGHEST_PROTOCOL)
 
-    training_data = np.asarray(training_data)
+    training_data['data'] = np.asarray(training_data['data'])
+    training_data['label'] = np.asarray(training_data['label'])
     train_loss = []
     validate_accuracy = []
 
@@ -84,15 +85,16 @@ if __name__ == '__main__':
         Training
         '''
         print('Training epoch=%d' % epoch)
-        shuffled_index = np.arange(len(training_data['data']))
+        number_data =  len(training_data['data'])
+        shuffled_index = np.arange(number_data)
         np.random.shuffle(shuffled_index)
 
-        for it in range(len(training_data)/config['epoch_size']+1):
+        for it in range(number_data/config['epoch_size']+1):
 
             if it == len(training_data)/config['epoch_size']:
-                data_ = training_data['data'][shuffled_index[it * config['epoch_size']: len(training_data) - 1]]
-                label_ = training_data['label'][shuffled_index[it * config['epoch_size']: len(training_data) - 1]]
-                print('Training %d-%d' % (it * config['epoch_size'], len(training_data) - 1))
+                data_ = training_data['data'][shuffled_index[it * config['epoch_size']: number_data - 1]]
+                label_ = training_data['label'][shuffled_index[it * config['epoch_size']: number_data - 1]]
+                print('Training %d-%d' % (it * config['epoch_size'], number_data - 1))
             else:
                 data_ = training_data['data'][shuffled_index[it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]]
                 label_ = training_data['label'][shuffled_index[it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]]
@@ -113,11 +115,12 @@ if __name__ == '__main__':
         print('Validating epoch=%d' % epoch)
 
         validate_a = []
-        for it in range(len(validation_data)/config['epoch_size']+1):
+        number_data = len(validation_data['data'])
+        for it in range(number_data/config['epoch_size']+1):
 
             if it == len(validation_data)/config['epoch_size']:
-                data_ = validation_data['data'][it * config['epoch_size']: len(validation_data) - 1]
-                label_ = validation_data['label'][it * config['epoch_size']: len(validation_data) - 1]
+                data_ = validation_data['data'][it * config['epoch_size']: number_data - 1]
+                label_ = validation_data['label'][it * config['epoch_size']: number_data - 1]
             else:
                 data_ = validation_data['data'][it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]
                 label_ = validation_data['label'][it * config['epoch_size']: (it + 1) * config['epoch_size'] - 1]
