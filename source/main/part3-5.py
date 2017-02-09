@@ -135,6 +135,9 @@ if __name__ == '__main__':
                 label_ = validation_data['label'][it * config['minibatch_size']: (it + 1) * config['minibatch_size']]
                 print('Validating %d-%d, size(data_)=%d, size(label_)=%d' % (it * config['minibatch_size'], (it + 1) * config['minibatch_size'], len(data_), len(label_)))
 
+            if len(data_) != config['minibatch_size']:
+                break
+
             solver.net.blobs['data'].data[...] = data_
             solver.net.blobs['label'].data[...] = label_
 

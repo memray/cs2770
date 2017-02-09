@@ -2,7 +2,7 @@ net: "/afs/cs.pitt.edu/usr0/memray/private/cs2770/models/train_val.prototxt" # F
 base_lr:  0.0001 # SET LEARNING RATE HERE
 lr_policy: "step"
 gamma: 0.1 # THE AMOUNT BY WHICH THE LEARNING RATE DECREASES
-stepsize: 10 # SET THIS TO NUMBER OF ITERATIONS IN TEN EPOCHS
+stepsize: 100 # SET THIS TO NUMBER OF ITERATIONS IN TEN EPOCHS
 display: 20
 max_iter: 999999
 momentum: 0.9
