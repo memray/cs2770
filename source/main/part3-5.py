@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     else:
         for class_id, class_name in enumerate(os.listdir(config['data_path'])):
-            print(class_name)
+            print("Processing" + class_name)
             data_list = []
             for img_id, img_file in enumerate(os.listdir(config['data_path']+os.sep+class_name)):
                 img = caffe.io.load_image(config['data_path']+os.sep+class_name+os.sep+img_file)
@@ -50,7 +50,7 @@ if __name__ == '__main__':
                 data_list.append(img)
             label_list = [class_id] * len(data_list)
             training_data.extend([data_list[:int(len(data_list)*0.8)], label_list[:int(len(data_list)*0.8)]])
-            validation_data.extend([data_list[int(len(data_list)*0.8)+1:len(data_list)*0.9], label_list[int(len(data_list)*0.8)+1:int(len(data_list)*0.9)]])
+            validation_data.extend([data_list[int(len(data_list)*0.8)+1: int(len(data_list)*0.9)], label_list[int(len(data_list)*0.8)+1:int(len(data_list)*0.9)]])
             testing_data.extend([data_list[int(len(data_list)*0.9)+1:], label_list[int(len(data_list)*0.9)+1:]])
 
         with open(config['training_data_cache'], 'w') as f_:
