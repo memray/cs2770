@@ -60,7 +60,7 @@ def extract_feature(deploy_proto,  model_path):
             data_sample['feature'] = copy.deepcopy(net.blobs['fc7'].data[0])
 
             print('Feature Matrix:')
-            print(' '.join(data_sample['feature']))
+            print(' '.join([str(d) for d in data_sample['feature']]))
 
             try:
                 input("Press enter!")
