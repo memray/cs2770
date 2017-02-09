@@ -209,7 +209,7 @@ def testing():
         test_a.append(solver.net.blobs['accuracy'].data)
         print('\tAccuracy=%f' % solver.net.blobs['accuracy'].data)
 
-    print('Test accuracy = %f' % (np.average(test_a)))
+    print('Test #(data)=%d, #(corect)=%d, accuracy=%f' % (len(test_a), int(sum(test_a)) , np.mean(test_a)))
 
 def extract_feature():
     caffe.set_device(3) # ENTER THE GPU NUMBER YOU NOTED ABOVE (0-3) HERE
