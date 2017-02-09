@@ -21,6 +21,9 @@ def load_config():
     config['minibatch_size'] = 32
     config['trained_model_dir'] = '/afs/cs.pitt.edu/usr0/memray/private/trained_models/'
 
+    if not os.path.exists(config['trained_model_dir']):
+        os.makedirs(config['trained_model_dir'])
+
     config['training_data_cache'] = '/afs/cs.pitt.edu/usr0/memray/private/processed_data/training_data.pkl'
     config['validation_data_cache'] = '/afs/cs.pitt.edu/usr0/memray/private/processed_data/validation_data.pkl'
     config['testing_data_cache'] = '/afs/cs.pitt.edu/usr0/memray/private/processed_data/testing_data.pkl'
