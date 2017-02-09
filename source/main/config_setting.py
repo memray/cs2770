@@ -21,6 +21,7 @@ def load_config():
     config['deploy.prototxt'] = '/afs/cs.pitt.edu/usr0/memray/private/cs2770/models/deploy.prototxt'
     config['minibatch_size'] = 1
     config['trained_model_dir'] = '/afs/cs.pitt.edu/usr0/memray/private/trained_models.stepsize=1000.lr=0.001/'
+    config['local_model_dir'] = 'models/'
 
     # if not os.path.exists(config['trained_model_dir']):
     #     os.makedirs(config['trained_model_dir'])

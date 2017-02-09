@@ -49,7 +49,8 @@ def svm_test_model(feature_path):
     X = sklearn.preprocessing.scale([d['feature_fc8'] for d in train_['data']])
     Y = [d['class'] for d in train_['data']]
     print(len(X))
-    print(train_['data'][:5])
+    print(X.shape)
+    print(train_['data'][:50])
 
     lin_clf = svm.LinearSVC()
     lin_clf.fit(X, Y)
@@ -60,7 +61,20 @@ def svm_test_model(feature_path):
 
     print('Accuracy on %d data = %f' % (len(X), accuracy))
 
+def transfer_training_plot():
+    with open(config['local_model_dir']+ 'training_loss.pkl', 'rb') as f_:
+        train_loss = pickle.load(f_)
+
+    with open(config['local_model_dir']+ 'validate_accuracy.pkl', 'rb') as f_:
+        validate_accuracy = pickle.load(f_)
+
+    print(train_loss)
+    print('-' * 50)
+    print(validate_accuracy)
+
 if __name__ == '__main__':
     pretrain_feature = '../pretrain_feature_dump.pkl'
-    newtrain_feature = '../newtrained_feature_dump.pkl'
+    newtrain_feature = '../newtrain_feature_dump.pkl'
     svm_test_model(newtrain_feature)
+    #
+    # transfer_training_plot()

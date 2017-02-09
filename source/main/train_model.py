@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import copy
 import numpy as np
 import cPickle as pickle
 import matplotlib.pyplot as plt
@@ -112,7 +113,7 @@ def training():
 
             solver.step(1)
 
-            loss = solver.net.blobs['loss'].data
+            loss = copy.deepcopy(solver.net.blobs['loss'].data)
             train_loss.append(loss)
             print('iteration %d, loss = %f' % (len(train_loss), loss))
 
@@ -211,14 +212,6 @@ def testing():
         # print(test_a)
 
     print('Test #(data)=%d, #(corect)=%d, accuracy=%f' % (len(test_a), int(sum(test_a)) , np.mean(test_a)))
-
-def plot():
-    with open(config['trained_model_dir']+ 'training_loss.pkl', 'w') as f_:
-        train_loss = pickle.load(f_)
-
-    with open(config['trained_model_dir']+ 'validate_accuracy.pkl', 'w') as f_:
-        validate_accuracy = pickle.load(f_)
-
 
 if __name__ == '__main__':
     testing()

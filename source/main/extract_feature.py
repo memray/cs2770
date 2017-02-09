@@ -47,12 +47,21 @@ def extract_feature(deploy_proto,  model_path):
             data_sample['class'] = class_id
             data_sample['class_name'] = class_name
 
+            print('Image Matrix:')
             img = caffe.io.load_image(config['data_path']+os.sep+class_name+os.sep+img_file)
             img = transformer.preprocess('data', img)
+
+            print(img)
+
             net.blobs['data'].data[...] = img
             output = net.forward()
 
-            data_sample['feature_fc8'] = net.blobs['fc7'].data[0]
+            data_sample['feature'] = net.blobs['fc7'].data[0]
+
+            print('Feature Matrix:')
+            print(net.blobs['fc7'].data[0])
+            input("Press enter!")
+            print('*' * 50)
             # data_sample['feature_fc8'] = net.blobs['fc8_class20'].data[0]
             # 'fc8' layer in pretrain AlexNet
             # data_sample['feature_fc8'] = net.blobs['fc8'].data[0]
