@@ -33,16 +33,16 @@ if __name__ == '__main__':
     testing_data = []
 
     if os.path.exists(config['training_data_cache']):
-        with open(config['training_data_cache'], 'w') as f_:
+        with open(config['training_data_cache'], 'rb') as f_:
             training_data = pickle.load(f_)
-        with open(config['validation_data_cache'], 'w') as f_:
+        with open(config['validation_data_cache'], 'rb') as f_:
             validation_data = pickle.load(f_)
-        with open(config['testing_data_cache'], 'w') as f_:
+        with open(config['testing_data_cache'], 'rb') as f_:
             testing_data = pickle.load(f_)
 
     else:
         for class_id, class_name in enumerate(os.listdir(config['data_path'])):
-            print("Processing" + class_name)
+            print("Processing - " + class_name)
             data_list = []
             for img_id, img_file in enumerate(os.listdir(config['data_path']+os.sep+class_name)):
                 img = caffe.io.load_image(config['data_path']+os.sep+class_name+os.sep+img_file)
@@ -53,11 +53,11 @@ if __name__ == '__main__':
             validation_data.extend([data_list[int(len(data_list)*0.8)+1: int(len(data_list)*0.9)], label_list[int(len(data_list)*0.8)+1:int(len(data_list)*0.9)]])
             testing_data.extend([data_list[int(len(data_list)*0.9)+1:], label_list[int(len(data_list)*0.9)+1:]])
 
-        with open(config['training_data_cache'], 'w') as f_:
+        with open(config['training_data_cache'], 'wb') as f_:
             pickle.dump(training_data, f_, protocol=pickle.HIGHEST_PROTOCOL)
-        with open(config['validation_data_cache'], 'w') as f_:
+        with open(config['validation_data_cache'], 'wb') as f_:
             pickle.dump(validation_data, f_, protocol=pickle.HIGHEST_PROTOCOL)
-        with open(config['testing_data_cache'], 'w') as f_:
+        with open(config['testing_data_cache'], 'wb') as f_:
             pickle.dump(testing_data, f_, protocol=pickle.HIGHEST_PROTOCOL)
 
     training_data = np.asarray(training_data)
