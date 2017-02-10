@@ -48,11 +48,12 @@ def extract_feature(deploy_proto,  model_path):
             data_sample['class'] = class_id
             data_sample['class_name'] = class_name
 
-            print('Image Matrix:')
             img = caffe.io.load_image(config['data_path']+os.sep+class_name+os.sep+img_file)
             img = transformer.preprocess('data', img)
 
+            # print('Image Matrix:')
             # print(img)
+
 
             net.blobs['data'].data[...] = img
             output = net.forward()
@@ -79,5 +80,5 @@ def extract_feature(deploy_proto,  model_path):
         pickle.dump(img_features, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 if __name__ == '__main__':
-    # extract_feature('/tmp/caffe/models/weights.caffemodel')
-    extract_feature(config['deploy.prototxt'], config['trained_model_dir']+'model.epoch=24.caffemodel')
+    extract_feature('/tmp/caffe/models/deploy.prototxt', '/tmp/caffe/models/weights.caffemodel')
+    # extract_feature(config['deploy.prototxt'], config['trained_model_dir']+'model.epoch=24.caffemodel')
