@@ -3,33 +3,62 @@ Homework 1 Report - Rui Meng
     I simply split the data by their indexes, that is I choose the data which index in [:len(data)*0.8] as training, [len(data)*0.8:len(data)*0.9] as validation and the remaining as testing data.
 
 2. Accuracy of pretrained model using SVM, and confusion matrix.
-Accuracy(N=1657) = 0.430296
-{0: 'sofa', 1: 'aeroplane', 2: 'cow', 3: 'car', 4: 'chair', 5: 'bird', 6: 'pottedplant', 7: 'horse', 8: 'train', 9: 'dog', 10: 'bus', 11: 'sheep', 12: 'motorbike', 13: 'diningtable', 14: 'tvmonitor', 15: 'bottle', 16: 'bicycle', 17: 'person', 18: 'boat', 19: 'cat'}
-[[  7   1   0   3  10   0   1   0   1   6   1   0   0   1   4   0   0  13    0   2]
- [  0  50   0   1   1   2   0   0   1   1   1   0   1   0   0   2   0   6    0   0]
- [  0   0  15   3   1   0   0   0   1   3   0   2   0   0   0   0   0   3    0   2]
- [  0   7   2  51   2   1   3   2   4   3   7   0   1   0   2   0   1  28    2   0]
- [ 11   1   1   5  23   3   7   2   1   5   0   0   0   6   4   4   2  28    0   8]
- [  0   1   2   0   2  43   0   0   2   4   0   0   0   0   0   2   1  12    3   4]
- [  2   1   1   2   6   2   8   3   1   2   0   1   0   3   0   0   0  16    0   4]
- [  0   0   2   1   1   2   1  13   0   4   0   2   0   0   0   3   0  17    0   2]
- [  1   0   0   1   2   0   0   0  32   0   0   0   0   0   0   2   1   9    4   2]
- [  1   1   1   3   3   4   2   2   2  67   2   1   1   0   0   2   0  23    2  11]
- [  0   0   0   6   0   0   1   0   2   0  20   0   0   0   0   0   0  12    1   0]
- [  1   0   1   1   1   1   0   0   1   2   0  16   1   0   0   2   0   3    0   2]
- [  0   0   0  10   0   0   0   1   2   0   0   1  18   1   1   0   2  15    0   1]
- [  4   0   0   1   8   1   4   1   0   3   0   0   1   9   2   2   0  14    0   3]
- [  0   0   0   4  14   0   3   0   1   2   0   0   0   0  16   0   0  16    0   1]
- [  0   0   1   2   5   2   3   1   0   3   0   0   1   5   1   9   3  33    1   0]
- [  0   3   0   6   1   0   2   0   0   1   0   0   2   0   1   1  18  19    0   1]
- [  6   9   5  32  19   3   7   6   9  26  12   1  11   8  13  10   5 207   14   5]
- [  0   1   0   3   1   2   0   0   5   1   0   0   0   0   0   1   0  10   26   0]
- [  1   1   1   2   3   4   1   1   1  17   0   1   0   0   2   0   0   7    0  65]]
+    I used the fc7 as features. As the number of features is much larger than the fc8, so I adjust the parameters of svm to improve the efficiency: max_iter=1000, verbose=1, dual=False
+    I find that the model performs worst on the 'person' class. One possibility is in most images there may be some people appear, which confuses the model to make correct decision.
+    Accuracy(N=1657) = 0.430296
+
+        {0: 'sofa', 1: 'aeroplane', 2: 'cow', 3: 'car', 4: 'chair', 5: 'bird', 6: 'pottedplant', 7: 'horse', 8: 'train', 9: 'dog', 10: 'bus', 11: 'sheep', 12: 'motorbike', 13: 'diningtable', 14: 'tvmonitor', 15: 'bottle', 16: 'bicycle', 17: 'person', 18: 'boat', 19: 'cat'}
+        [[  7   1   0   3  10   0   1   0   1   6   1   0   0   1   4   0   0  13    0   2]
+         [  0  50   0   1   1   2   0   0   1   1   1   0   1   0   0   2   0   6    0   0]
+         [  0   0  15   3   1   0   0   0   1   3   0   2   0   0   0   0   0   3    0   2]
+         [  0   7   2  51   2   1   3   2   4   3   7   0   1   0   2   0   1  28    2   0]
+         [ 11   1   1   5  23   3   7   2   1   5   0   0   0   6   4   4   2  28    0   8]
+         [  0   1   2   0   2  43   0   0   2   4   0   0   0   0   0   2   1  12    3   4]
+         [  2   1   1   2   6   2   8   3   1   2   0   1   0   3   0   0   0  16    0   4]
+         [  0   0   2   1   1   2   1  13   0   4   0   2   0   0   0   3   0  17    0   2]
+         [  1   0   0   1   2   0   0   0  32   0   0   0   0   0   0   2   1   9    4   2]
+         [  1   1   1   3   3   4   2   2   2  67   2   1   1   0   0   2   0  23    2  11]
+         [  0   0   0   6   0   0   1   0   2   0  20   0   0   0   0   0   0  12    1   0]
+         [  1   0   1   1   1   1   0   0   1   2   0  16   1   0   0   2   0   3    0   2]
+         [  0   0   0  10   0   0   0   1   2   0   0   1  18   1   1   0   2  15    0   1]
+         [  4   0   0   1   8   1   4   1   0   3   0   0   1   9   2   2   0  14    0   3]
+         [  0   0   0   4  14   0   3   0   1   2   0   0   0   0  16   0   0  16    0   1]
+         [  0   0   1   2   5   2   3   1   0   3   0   0   1   5   1   9   3  33    1   0]
+         [  0   3   0   6   1   0   2   0   0   1   0   0   2   0   1   1  18  19    0   1]
+         [  6   9   5  32  19   3   7   6   9  26  12   1  11   8  13  10   5 207   14   5]
+         [  0   1   0   3   1   2   0   0   5   1   0   0   0   0   0   1   0  10   26   0]
+         [  1   1   1   2   3   4   1   1   1  17   0   1   0   0   2   0   0   7    0  65]]
 
 3. Accuracy of trained model without SVM.
+    I further trained the model for our dataset. I tried multiple configurations for training (stepsize and lr_base). Actually I find that the training performance is not stable with different settings. One explanation is we are training on the basis of a pretrained one, thus it is very sensitive to the learning rate. Unfortunately I didn't find one leads to a ideal learning curve. Maybe more iterations and better optimization methods are required.
+    And the best performance is as shown below:
     Test #(data)=1657, #(corect)=901, accuracy=0.543754
 
 4. Accuracy of trained model using SVM.
-    Accuracy = 0.246228
+    Similar to the part2, I trained an SVM on the top of trained model with 'fc7' features. The performance is better than the one of pretrained model. But the linear svm failed to beat the full-connection output of the CNN model. One key reason is the svm failed to converge (returned warning:ConvergenceWarning: Liblinear failed to converge, increase the number of iterations.
+  "the number of iterations.", ConvergenceWarning)). However to train this svm model with iteration=1000 took me more than one hour. I believe further training on either CNN or SVM can result in a better performance.
+    Accuracy(N=1657) = 0.492456
+    {0: 'sofa', 1: 'aeroplane', 2: 'cow', 3: 'car', 4: 'chair', 5: 'bird', 6: 'pottedplant', 7: 'horse', 8: 'train', 9: 'dog', 10: 'bus', 11: 'sheep', 12: 'motorbike', 13: 'diningtable', 14: 'tvmonitor', 15: 'bottle', 16: 'bicycle', 17: 'person', 18: 'boat', 19: 'cat'}
+    [[  8   0   0   2  10   0   4   0   0   2   0   0   0   3   5   1   0  12   0   3]
+     [  0  57   0   3   0   0   0   0   0   1   1   0   0   0   0   0   0   4   0   0]
+     [  0   0  14   1   1   0   0   1   0   4   0   3   1   0   0   0   0   5   0   0]
+     [  1   4   1  49   0   0   2   1   6   0   8   0   5   1   0   4   3  28   3   0]
+     [  8   1   0   3  26   0   6   0   0   7   0   2   0  13   4   3   1  32   0   5]
+     [  0   2   1   2   0  52   0   1   0   1   2   0   0   0   0   1   0   8   3   3]
+     [  3   1   0   0   7   1   9   1   0   4   0   1   2   2   1   1   1  15   0   3]
+     [  0   0   3   3   0   2   0  22   0   4   1   0   0   0   0   0   0  11   1   1]
+     [  1   0   0   2   1   1   1   0  40   0   0   0   0   1   0   0   0   7   0   0]
+     [  4   0   1   6   2   0   3   4   1  69   0   3   2   2   0   3   0  15   1  12]
+     [  0   0   0   5   1   0   0   0   2   0  22   0   1   0   0   1   0  10   0   0]
+     [  0   0   1   1   1   2   1   2   0   0   0  19   0   0   0   0   0   3   0   2]
+     [  0   1   0   7   0   0   0   1   1   1   0   1  24   0   0   1   1  14   0   0]
+     [  1   0   0   1  13   0   5   0   0   0   0   1   0   9   1   6   0  15   0   1]
+     [  3   1   0   0   7   1   1   0   0   1   1   0   0   4  22   1   0  14   0   1]
+     [  1   0   0   0   4   2   0   1   0   1   0   0   0   7   3  16   1  34   0   0]
+     [  0   1   0   3   3   2   1   0   0   1   0   0   5   0   0   2  23  14   0   0]
+     [  8   6   1  25  14   2   4  15  11  15  14   2  11   9   7  13  10 231   9   1]
+     [  0   2   0   1   1   1   0   1   1   0   0   1   0   1   0   1   0  11   29  0]
+     [  1   0   2   1   4   2   1   0   0  12   0   1   0   0   1   0   0   7   0  75]]
 
 5. Plot of train losses and validation accuracies.
+    The two plots are attached as image files: training_loss and validation_accuracy

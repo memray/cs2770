@@ -58,7 +58,7 @@ def svm_test_model(feature_path):
     print(X.shape)
     # print(train_['data'][:50])
 
-    lin_clf = svm.LinearSVC(max_iter=100, verbose=1, dual=False)
+    lin_clf = svm.LinearSVC(max_iter=1000, verbose=1, dual=False)
     lin_clf.fit(X, Y)
 
     X = sklearn.preprocessing.scale([d['feature'] for d in test_['data']])
@@ -74,9 +74,6 @@ def svm_test_model(feature_path):
     cm = confusion_matrix(Y, y_pred)
     print(cm)
 
-
-
-
 def transfer_training_plot():
     with open(config['local_model_dir']+ 'training_loss.pkl', 'rb') as f_:
         train_loss = pickle.load(f_)
@@ -88,9 +85,24 @@ def transfer_training_plot():
     print('-' * 50)
     print(validate_accuracy)
 
+    plt.figure()
+    plt.title("Learning Curve")
+    plt.xlabel("Training examples")
+    plt.ylabel("Score")
+    plt.grid()
+
+    # plt.fill_between(train_sizes, test_scores_mean - test_scores_std, test_scores_mean + test_scores_std, alpha=0.1, color="g")
+    plt.plot(validate_accuracy, '-', color="g",
+             label="Validation Accuracy")
+    # plt.plot(train_sizes, test_scores_mean, 'o-', color="g", label="Cross-validation score")
+
+    plt.legend(loc="best")
+    plt.show()
+
+
 if __name__ == '__main__':
     # pretrain_feature = '../pretrain_feature_dump.pkl'
-    newtrain_feature = '../newtrain_feature_dump.pkl'
-    svm_test_model(newtrain_feature)
-    #
-    # transfer_training_plot()
+    # newtrain_feature = '../newtrain_feature_dump.pkl'
+    # svm_test_model(newtrain_feature)
+
+    transfer_training_plot()
