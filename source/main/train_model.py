@@ -7,13 +7,15 @@ import cPickle as pickle
 import matplotlib.pyplot as plt
 from PIL import Image
 from sklearn import svm
-# import caffe
+import caffe
 import config_setting
 
 __author__ = "Rui Meng"
 __email__ = "rui.meng@pitt.edu"
 
 config = config_setting.load_config()
+
+
 def training():
     caffe.set_device(3) # ENTER THE GPU NUMBER YOU NOTED ABOVE (0-3) HERE
     caffe.set_mode_gpu()
@@ -143,7 +145,9 @@ def training():
             solver.net.blobs['label'].data[...] = label_
 
             solver.net.forward()
-            validate_a.append(solver.net.blobs['accuracy'].data)
+
+            a_ = copy.deepcopy(solver.net.blobs['accuracy'].data)
+            validate_a.append(a_)
 
         validate_accuracy.append(np.average(validate_a))
         print('Epoch %d, accuracy = %f' % (epoch, np.average(validate_a)))
@@ -211,7 +215,7 @@ def testing():
         print('\tAccuracy=%f' % int(solver.net.blobs['accuracy'].data))
         # print(test_a)
 
-    print('Test #(data)=%d, #(corect)=%d, accuracy=%f' % (len(test_a), int(sum(test_a)) , np.mean(test_a)))
+    print('Test #(data)=%d, #(corect)=%d, accuracy=%f' % (len(test_a), int(sum(test_a)), np.mean(test_a)))
 
 if __name__ == '__main__':
-    testing()
+    training()
